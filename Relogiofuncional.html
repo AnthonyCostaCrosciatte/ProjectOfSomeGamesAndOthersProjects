@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analog Clock</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .clock-container {
+      position: relative;
+    }
+
+    .info-container {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .clock {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      border: 15px solid #000;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 50px; /* Ajustado para dar espaço para as informações */
+    }
+
+    .hour-markers {
+      position: absolute;
+      width: 4px;
+      height: 8px;
+      background-color: #000;
+      transform-origin: 50% 100%;
+    }
+
+    .hour-marker-1 { transform: rotate(30deg); }
+    .hour-marker-2 { transform: rotate(60deg); }
+    .hour-marker-3 { transform: rotate(90deg); }
+    .hour-marker-4 { transform: rotate(120deg); }
+    .hour-marker-5 { transform: rotate(150deg); }
+    .hour-marker-6 { transform: rotate(180deg); }
+    .hour-marker-7 { transform: rotate(210deg); }
+    .hour-marker-8 { transform: rotate(240deg); }
+    .hour-marker-9 { transform: rotate(270deg); }
+    .hour-marker-10 { transform: rotate(300deg); }
+    .hour-marker-11 { transform: rotate(330deg); }
+    .hour-marker-12 { transform: rotate(360deg); }
+
+    .hour-hand, .minute-hand, .second-hand {
+      position: absolute;
+      transform-origin: 50% 100%;
+      background-color: #000;
+    }
+
+    .hour-hand {
+      width: 8px;
+      height: 120px;
+      top: calc(50% - 120px);
+      left: calc(50% - 4px);
+      background-color: red;
+      transform: rotate(90deg);
+    }
+
+    .minute-hand {
+      width: 6px;
+      height: 160px;
+      top: calc(50% - 160px);
+      left: calc(50% - 3px);
+      background-color: orange;
+      transform: rotate(90deg);
+    }
+
+    .second-hand {
+      width: 4px;
+      height: 180px;
+      top: calc(50% - 180px);
+      left: calc(50% - 2px);
+      transform: rotate(90deg);
+    }
+  </style>
+</head>
+<body>
+  <div class="info-container">
+    <div id="time"></div>
+    <div id="date"></div>
+    <div id="holiday"></div>
+  </div>
+  <div class="clock-container">
+    <div class="clock">
+      <!-- Marcadores de hora -->
+      <div class="hour-markers hour-marker-1"></div>
+      <div class="hour-markers hour-marker-2"></div>
+      <div class="hour-markers hour-marker-3"></div>
+      <div class="hour-markers hour-marker-4"></div>
+      <div class="hour-markers hour-marker-5"></div>
+      <div class="hour-markers hour-marker-6"></div>
+      <div class="hour-markers hour-marker-7"></div>
+      <div class="hour-markers hour-marker-8"></div>
+      <div class="hour-markers hour-marker-9"></div>
+      <div class="hour-markers hour-marker-10"></div>
+      <div class="hour-markers hour-marker-11"></div>
+      <div class="hour-markers hour-marker-12"></div>
+
+      <!-- Ponteiros do relógio -->
+      <div class="hour-hand"></div>
+      <div class="minute-hand"></div>
+      <div class="second-hand"></div>
+    </div>
+  </div>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+      const day = now.getDate();
+      const month = now.toLocaleString('pt-BR', { month: 'long' });
+      const weekday = now.toLocaleString('pt-BR', { weekday: 'long' });
+      
+      const timeElement = document.getElementById('time');
+      const dateElement = document.getElementById('date');
+      const holidayElement = document.getElementById('holiday');
+
+      timeElement.textContent = `Horário atual: ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      dateElement.textContent = `Data: ${weekday}, ${day} de ${month}`;
+      
+      // Simulação de feriado
+      const isHoliday = Math.random() < 0.1; // Aproximadamente 10% de chance de ser feriado
+      holidayElement.textContent = isHoliday ? 'Hoje é feriado!' : 'Hoje não é feriado.';
+      
+      // Atualizar ponteiros do relógio
+      const hourHand = document.querySelector('.hour-hand');
+      const minuteHand = document.querySelector('.minute-hand');
+      const secondHand = document.querySelector('.second-hand');
+
+      const hourDeg = (hours % 12) * 30 + minutes / 2;
+      const minuteDeg = minutes * 6 + seconds / 10;
+      const secondDeg = seconds * 6;
+
+      hourHand.style.transform = `rotate(${hourDeg}deg)`;
+      minuteHand.style.transform = `rotate(${minuteDeg}deg)`;
+      secondHand.style.transform = `rotate(${secondDeg}deg)`;
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
+  </script>
+</body>
+</html>
