@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Match-3 Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="left-panel">
+        <input type="text" id="player-name" placeholder="Enter your name">
+        <button id="start-game">Start Game</button>
+        <button id="show-scoreboard">Show Scoreboard</button>
+        <button id="coming-soon">Coming Soon</button>
+        <div id="scoreboard" class="hidden">
+            <h2>Scoreboard</h2>
+            <div id="score-list"></div>
+        </div>
+    </div>
+    <div id="main-panel">
+        <div id="score-container">
+            <span id="score">Score: 0</span>
+            <span id="timer">Time: 02:00</span>
+        </div>
+        <div id="game-board"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

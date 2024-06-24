@@ -1,0 +1,105 @@
+body {
+    display: flex;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+
+#left-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+#left-panel input, #left-panel button {
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+#main-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+#score-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#game-board {
+    display: grid;
+    grid-template-columns: repeat(8, 50px);
+    grid-template-rows: repeat(8, 50px);
+    gap: 5px;
+}
+
+.tile {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f39c12;
+    font-size: 24px;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.tile.selected {
+    transform: scale(1.1);
+}
+
+.tile[data-color="1"] { background-color: #e74c3c; }
+.tile[data-color="2"] { background-color: #3498db; }
+.tile[data-color="3"] { background-color: #2ecc71; }
+.tile[data-color="4"] { background-color: #9b59b6; }
+.tile[data-color="5"] { background-color: #f1c40f; }
+.tile[data-color="6"] { background-color: #e67e22; }
+.tile[data-color="0"] { background-color: transparent; }
+
+.hidden {
+    display: none;
+}
+
+#scoreboard {
+    margin-top: 20px;
+    width: 100%;
+    text-align: left;
+}
+
+#scoreboard h2 {
+    margin: 0 0 10px 0;
+}
+
+#score-list div {
+    margin-bottom: 5px;
+}
+
+.diamond:before {
+    content: "♦️ ";
+}
+
+.gold:before {
+    content: "🥇 ";
+}
+
+.silver:before {
+    content: "🥈 ";
+}
+
+.bronze:before {
+    content: "🥉 ";
+}

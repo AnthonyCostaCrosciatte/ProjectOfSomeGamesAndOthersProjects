@@ -14,7 +14,7 @@
             height: 100vh;
             background-color: #f0f0f0;
             position: relative;
-            overflow: hidden; /* Fixa a tela para evitar a movimentação ao usar as teclas */
+            overflow: hidden; 
         }
 
         #game-area {
@@ -55,67 +55,73 @@
             const ctx = gameArea.getContext('2d');
 
             let snake = [{ x: 10, y: 10 }];
-            let food = { x: 15, y: 15 };
             let dx = 0;
             let dy = 0;
             let score = 0;
             let highScore = 0;
             let gameEnded = false;
 
+            const fruits = [
+                { type: 'apple', color: 'red', points: 1, draw: drawApple },
+                { type: 'banana', color: 'yellow', points: 2, draw: drawBanana },
+                { type: 'cherry', color: 'darkred', points: 3, draw: drawCherry },
+                { type: 'watermelon', color: 'green', points: 4, draw: drawWatermelon },
+                { type: 'grape', color: 'purple', points: 5, draw: drawGrape }
+            ];
+
+            let food = createFood();
+
             function draw() {
                 ctx.clearRect(0, 0, gameArea.width, gameArea.height);
-                ctx.fillStyle = 'green';
+
                 snake.forEach((segment, index) => {
                     if (index === 0) {
-                        // Desenha a cabeça da cobra com olhos e língua
                         ctx.fillStyle = 'green';
                         ctx.fillRect(segment.x * blockSize, segment.y * blockSize, blockSize, blockSize);
                         ctx.fillStyle = 'black';
-                        ctx.fillRect(segment.x * blockSize + 6, segment.y * blockSize + 6, 4, 4); // olho esquerdo
-                        ctx.fillRect(segment.x * blockSize + 10, segment.y * blockSize + 6, 4, 4); // olho direito
+                        ctx.fillRect(segment.x * blockSize + 6, segment.y * blockSize + 6, 4, 4); 
+                        ctx.fillRect(segment.x * blockSize + 10, segment.y * blockSize + 6, 4, 4); 
                         ctx.fillStyle = 'red';
                         if (dx === 1) {
-                            ctx.fillRect(segment.x * blockSize + 17, segment.y * blockSize + 14, 4, 2); // língua para direita
+                            ctx.fillRect(segment.x * blockSize + 17, segment.y * blockSize + 14, 4, 2); 
                         } else if (dx === -1) {
-                            ctx.fillRect(segment.x * blockSize - 5, segment.y * blockSize + 14, 4, 2); // língua para esquerda
+                            ctx.fillRect(segment.x * blockSize - 5, segment.y * blockSize + 14, 4, 2); 
                         } else if (dy === 1) {
-                            ctx.fillRect(segment.x * blockSize + 14, segment.y * blockSize + 17, 2, 4); // língua para baixo
+                            ctx.fillRect(segment.x * blockSize + 14, segment.y * blockSize + 17, 2, 4); 
                         } else if (dy === -1) {
-                            ctx.fillRect(segment.x * blockSize + 14, segment.y * blockSize - 5, 2, 4); // língua para cima
+                            ctx.fillRect(segment.x * blockSize + 14, segment.y * blockSize - 5, 2, 4); 
                         }
                     } else {
-                        // Desenha o corpo da cobra
                         ctx.fillStyle = 'green';
                         ctx.fillRect(segment.x * blockSize, segment.y * blockSize, blockSize, blockSize);
                     }
                 });
-                ctx.fillStyle = 'red';
-                ctx.beginPath();
-                ctx.arc((food.x * blockSize) + (blockSize / 2), (food.y * blockSize) + (blockSize / 2), blockSize / 2, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.fillStyle = 'green';
-                ctx.fillRect((food.x * blockSize) + (blockSize / 2) - 2, (food.y * blockSize) - 2, 4, 4);
+
+                food.draw(food.x * blockSize, food.y * blockSize);
             }
 
             function moveSnake() {
                 const head = { x: snake[0].x + dx, y: snake[0].y + dy };
                 snake.unshift(head);
+
                 if (head.x === food.x && head.y === food.y) {
-                    score++;
+                    score += food.points;
                     if (score > highScore) {
                         highScore = score;
                     }
-                    createFood();
+                    food = createFood();
                 } else {
                     snake.pop();
                 }
             }
 
             function createFood() {
-                food = {
+                const newFood = {
+                    ...fruits[Math.floor(Math.random() * fruits.length)],
                     x: Math.floor(Math.random() * (gameArea.width / blockSize)),
                     y: Math.floor(Math.random() * (gameArea.height / blockSize))
                 };
+                return newFood;
             }
 
             function checkCollision() {
@@ -146,7 +152,7 @@
                     dx = 0;
                     dy = 0;
                     score = 0;
-                    createFood();
+                    food = createFood();
                     draw();
                     gameEnded = false;
                     gameLoop();
@@ -156,6 +162,69 @@
             function updateScore() {
                 document.getElementById('score-display').innerText = `Score: ${score}`;
                 document.getElementById('high-score-display').innerText = `High Score: ${highScore}`;
+            }
+
+            function drawApple(x, y) {
+                ctx.fillStyle = 'red';
+                ctx.beginPath();
+                ctx.arc(x + blockSize / 2, y + blockSize / 2, blockSize / 2, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = 'green';
+                ctx.fillRect(x + blockSize / 2 - 2, y - 2, 4, 4);
+            }
+
+            function drawBanana(x, y) {
+                ctx.fillStyle = 'yellow';
+                ctx.beginPath();
+                ctx.moveTo(x + blockSize / 4, y + blockSize / 2);
+                ctx.quadraticCurveTo(x + blockSize / 2, y, x + 3 * blockSize / 4, y + blockSize / 2);
+                ctx.quadraticCurveTo(x + blockSize / 2, y + blockSize, x + blockSize / 4, y + blockSize / 2);
+                ctx.fill();
+            }
+
+            function drawCherry(x, y) {
+                ctx.fillStyle = 'darkred';
+                ctx.beginPath();
+                ctx.arc(x + blockSize / 3, y + blockSize / 3, blockSize / 4, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(x + 2 * blockSize / 3, y + blockSize / 3, blockSize / 4, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = 'green';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(x + blockSize / 3, y + blockSize / 3);
+                ctx.lineTo(x + blockSize / 2, y - blockSize / 8);
+                ctx.lineTo(x + 2 * blockSize / 3, y + blockSize / 3);
+                ctx.stroke();
+            }
+
+            function drawWatermelon(x, y) {
+                ctx.fillStyle = 'green';
+                ctx.beginPath();
+                ctx.ellipse(x + blockSize / 2, y + blockSize / 2, blockSize / 2, blockSize / 4, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = 'darkgreen';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(x + blockSize / 2 - blockSize / 4, y + blockSize / 2 - blockSize / 4);
+                ctx.lineTo(x + blockSize / 2 + blockSize / 4, y + blockSize / 2 + blockSize / 4);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(x + blockSize / 2 + blockSize / 4, y + blockSize / 2 - blockSize / 4);
+                ctx.lineTo(x + blockSize / 2 - blockSize / 4, y + blockSize / 2 + blockSize / 4);
+                ctx.stroke();
+            }
+
+            function drawGrape(x, y) {
+                ctx.fillStyle = 'purple';
+                for (let i = 0; i < 3; i++) {
+                    for (let j = 0; j < 3; j++) {
+                        ctx.beginPath();
+                        ctx.arc(x + (i * blockSize / 3), y + (j * blockSize / 3), blockSize / 6, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
             }
 
             document.addEventListener('keydown', (e) => {
@@ -195,10 +264,10 @@
                 }
             });
 
-            createFood();
             draw();
             gameLoop();
         });
     </script>
 </body>
 </html>
+
