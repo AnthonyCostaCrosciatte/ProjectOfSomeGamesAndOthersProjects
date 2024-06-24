@@ -1,2 +1,4 @@
-# ProjectOfSomeGamesAndOthersProjects
-Pasta para programação de joguinhos por via web, como as linguagens de programação Javascript, Html, CSS, as vezes PHP, Programação orientada a objetos, C# e entre outros. Here we will have programming games via the web, such as the programming languages Javascript, Html, CSS, sometimes PHP, Object-Oriented Programming, C# (C Sharp) and the like.
+Pasta para programação de jogos eletrônicos via web, utilizando linguagens de programação como JavaScript (incluindo HTML e CSS). Às vezes, utilizo PHP com ou sem Programação Orientada a Objetos. 
+Pretendo também trazer jogos feitos em Java e C++.
+Folder for programming electronic games via the web, using programming languages such as JavaScript (including HTML and CSS). Sometimes, I use PHP with or without Object Oriented Programming. 
+I also intend to bring games made in Java and C++.
